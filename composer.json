@@ -1,0 +1,17 @@
+{
+    "name": "martinshaw/decomposer",
+    "autoload": {
+        "psr-4": {
+            "Martinshaw\\Decomposer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Martin Shaw",
+            "email": "hello@martinshaw.co"
+        }
+    ],
+    "require": {
+        "php-tui/php-tui": "^0.1.0"
+    }
+}
