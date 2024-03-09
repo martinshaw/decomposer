@@ -1,7 +1,9 @@
 <?php
 namespace Martinshaw\Decomposer;
 
-class VendorDirectory {
+use JsonSerializable;
+
+class VendorDirectory implements JsonSerializable{
     private string $path;
     private int $size;
 
@@ -29,5 +31,13 @@ class VendorDirectory {
         }
 
         return round($bytes, 2) . ' ' . $units[$unit];
+    }
+
+    public function jsonSerialize() {
+        return [
+            'path' => $this->path,
+            'size' => $this->size,
+            'sizeHumanReadable' => $this->getSizeAsHumanReadable()
+        ];
     }
 }

@@ -15,6 +15,5 @@ if ($rootPath === false) {
 $walker = new VendorDirectoriesWalker();
 $directories = $walker->walk($rootPath);
 
-$ui = new Application();
-$ui->addDirectories($directories);
+$ui = new Application($rootPath);
 $ui->run();
