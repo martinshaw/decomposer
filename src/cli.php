@@ -7,7 +7,7 @@ use Martinshaw\Decomposer\VendorDirectoryDeleter;
 
 // Echo help information, required path, with optional --all flag which will automatically delete all vendor directories without interaction
 if (in_array('--help', $argv) || in_array('-h', $argv)) {
-    echo "Usage: decomposer [path] [--all]\n";
+    echo "Usage: " . $argv[0] . " [path] [--all]\n";
     echo "  path: The path to the root of projects whose vendor directories you wish to delete\n";
     echo "  --all: Automatically delete all vendor directories without interaction (optional)\n";
     echo "  --help: Display this help information\n";
@@ -17,7 +17,7 @@ if (in_array('--help', $argv) || in_array('-h', $argv)) {
     exit(0);
 }
 
-$rootPath = empty($argv[1]) ? getcwd() : $argv[1];
+$rootPath = empty($argv[1]) || $argv[1] === '--all' ? getcwd() : $argv[1];
 $rootPath = realpath($rootPath);
 
 if ($rootPath === false) {

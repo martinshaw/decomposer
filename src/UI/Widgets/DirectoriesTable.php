@@ -34,8 +34,7 @@ class DirectoriesTable implements Component
 
     public function __construct(
         protected Application $app
-    )
-    {
+    ) {
         $this->state = new TableState();
     }
 
@@ -60,8 +59,8 @@ class DirectoriesTable implements Component
                 $directoryIsSelected = in_array($directory, $this->selectedDirectories);
 
                 $caption = $directory->getPath();
-                if ($directoryIsSelected) $caption .= ' (is deleting ...)';
-                if ($directory->getCannotBeDeleted()) $caption .= ' (do not have permission to delete)';
+                if ($directoryIsSelected) $caption .= ' [is deleting ...]';
+                if ($directory->getCannotBeDeleted()) $caption .= ' [no permission - try sudo]';
 
                 return TableRow::fromCells(
                     TableCell::fromLine(Line::fromString($directory->getSizeAsHumanReadable())),
@@ -81,6 +80,7 @@ class DirectoriesTable implements Component
             }
             if ($event->code === KeyCode::Enter) {
                 if (in_array($this->directories[$this->selectedIndex], $this->selectedDirectories)) return;
+                if ($this->directories[$this->selectedIndex] === null) return;
 
                 $this->selectedDirectories[] = $this->directories[$this->selectedIndex];
                 $this->app->deleteSelectedDirectory($this->directories[$this->selectedIndex]);
@@ -94,10 +94,10 @@ class DirectoriesTable implements Component
     public function setDirectories(array $directories)
     {
         $this->selectedDirectories = [];
-        $this->directories = $directories;
+        $this->directories = array_values($directories);
 
         $this->state = new TableState();
-        // $this->selectedIndex = $this->selectedIndex < count($directories) ? $this->selectedIndex : 0;
-        $this->selectedIndex = 0;
+        $this->selectedIndex = ($this->selectedIndex < count($this->directories)) ?
+            $this->selectedIndex : (count($this->directories) - 1);
     }
 }

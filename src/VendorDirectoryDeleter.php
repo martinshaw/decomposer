@@ -19,8 +19,12 @@ class VendorDirectoryDeleter
 
     private function deleteDirectory(string $path): void
     {
-        $scan = scandir($path);
-        if ($scan === false) return;
+        try {
+            $scan = @scandir($path);
+            if ($scan === false) return;
+        } catch (\Exception $e) {
+            return;
+        }
 
         $files = array_diff($scan, ['.', '..']);
         foreach ($files as $file) {
