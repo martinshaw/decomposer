@@ -4,6 +4,8 @@ namespace Martinshaw\Decomposer\UI;
 
 use Martinshaw\Decomposer\UI\Component;
 use Martinshaw\Decomposer\VendorDirectoriesWalker;
+use Martinshaw\Decomposer\VendorDirectory;
+use Martinshaw\Decomposer\VendorDirectoryDeleter;
 use PhpTui\Term\Actions;
 use PhpTui\Term\ClearType;
 use PhpTui\Term\Event;
@@ -40,14 +42,13 @@ class Application
 
     public function __construct(
         private string $rootPath,
-    )
-    {
+    ) {
         $this->terminal = Terminal::new();
 
         $this->display = DisplayBuilder::default()->fullscreen()->build();
 
-        $this->logoWidget = new Logo();
-        $this->tableWidget = new DirectoriesTable();
+        $this->logoWidget = new Logo($this);
+        $this->tableWidget = new DirectoriesTable($this);
     }
 
     private function draw()
@@ -62,7 +63,7 @@ class Application
                     )
                     ->widgets(
                         $this->logoWidget->build(),
-                        (new LoadingText())->build(),
+                        (new LoadingText($this))->build(),
                     )
             );
             return;
@@ -84,7 +85,7 @@ class Application
 
     private function onFirstRender()
     {
-        if ($this->directoriesHaveLoaded) return; 
+        if ($this->directoriesHaveLoaded) return;
 
         $this->directories = (new VendorDirectoriesWalker())->walk($this->rootPath);
         $this->tableWidget->setDirectories($this->directories);
@@ -164,5 +165,22 @@ class Application
         $this->untrapInput();
 
         return 0;
+    }
+
+    public function deleteSelectedDirectory(VendorDirectory $directory)
+    {
+        // Draw one more time before hanging the UI, to display the 'is deleting ...' message
+        $this->draw();
+
+        $deleter = new VendorDirectoryDeleter();
+        $deleter->delete($directory);
+
+        $this->directories = array_filter(
+            $this->directories,
+            function ($current) use ($directory) {
+                return $current->getPath() !== $directory->getPath();
+            }
+        );
+        $this->tableWidget->setDirectories($this->directories);
     }
 }

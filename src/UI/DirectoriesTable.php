@@ -30,7 +30,9 @@ class DirectoriesTable implements Component
     private TableState $state;
     private int $selectedIndex = 0;
 
-    public function __construct()
+    public function __construct(
+        protected Application $app
+    )
     {
         $this->state = new TableState();
     }
@@ -53,6 +55,8 @@ class DirectoriesTable implements Component
                 )
             )
             ->rows(...array_map(function (VendorDirectory $directory) {
+                $directoryIsSelected = in_array($directory, $this->selectedDirectories);
+
                 return TableRow::fromCells(
                     // TableCell::fromLine(Line::fromSpan(
                     //     Span::fromString($event[1])->fg(match ($event[1]) {
@@ -63,7 +67,7 @@ class DirectoriesTable implements Component
                     //     }),
                     // )),
                     TableCell::fromLine(Line::fromString($directory->getSizeAsHumanReadable())),
-                    TableCell::fromLine(Line::fromString($directory->getPath())),
+                    TableCell::fromLine(Line::fromString($directory->getPath() . ($directoryIsSelected ? ' (is deleting ...)' : ''))),
                 );
             }, $this->directories));
     }
@@ -72,16 +76,16 @@ class DirectoriesTable implements Component
     {
         if ($event instanceof CodedKeyEvent) {
             if ($event->code === KeyCode::Down) {
-                $this->selectedIndex++;
+                $this->selectedIndex = ($this->selectedIndex < count($this->directories) - 1) ? ($this->selectedIndex + 1) : 0;
             }
             if ($event->code === KeyCode::Up) {
-                if ($this->selectedIndex > 0) {
-                    $this->selectedIndex--;
-                }
+                $this->selectedIndex = ($this->selectedIndex > 0) ? $this->selectedIndex - 1 : count($this->directories) - 1;
             }
             if ($event->code === KeyCode::Enter) {
                 if (in_array($this->directories[$this->selectedIndex], $this->selectedDirectories)) return;
+
                 $this->selectedDirectories[] = $this->directories[$this->selectedIndex];
+                $this->app->deleteSelectedDirectory($this->directories[$this->selectedIndex]);
             }
         }
     }

@@ -10,6 +10,11 @@ use PhpTui\Tui\Model\Widget;
 
 class LoadingText implements Component
 {
+    public function __construct(Application $app)
+    {
+        // Do nothing
+    }
+
     public function build(): Widget
     {
         return ParagraphWidget::fromText(
