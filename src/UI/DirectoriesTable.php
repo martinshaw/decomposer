@@ -22,9 +22,13 @@ class DirectoriesTable implements Component
      * @var VendorDirectory[]
      */
     private array $directories = [];
+    /**
+     * @var VendorDirectory[]
+     */
+    private array $selectedDirectories = [];
 
     private TableState $state;
-    private int $selected = 0;
+    private int $selectedIndex = 0;
 
     public function __construct()
     {
@@ -35,8 +39,8 @@ class DirectoriesTable implements Component
     {
         return TableWidget::default()
             ->state($this->state)
-            ->select($this->selected)
-            ->highlightSymbol(' (Space to delete) -> ')
+            ->select($this->selectedIndex)
+            ->highlightSymbol(' (Enter to delete) -> ')
             ->highlightStyle(Style::default()->black()->onCyan())
             ->widths(
                 Constraint::percentage(15),
@@ -68,12 +72,16 @@ class DirectoriesTable implements Component
     {
         if ($event instanceof CodedKeyEvent) {
             if ($event->code === KeyCode::Down) {
-                $this->selected++;
+                $this->selectedIndex++;
             }
             if ($event->code === KeyCode::Up) {
-                if ($this->selected > 0) {
-                    $this->selected--;
+                if ($this->selectedIndex > 0) {
+                    $this->selectedIndex--;
                 }
+            }
+            if ($event->code === KeyCode::Enter) {
+                if (in_array($this->directories[$this->selectedIndex], $this->selectedDirectories)) return;
+                $this->selectedDirectories[] = $this->directories[$this->selectedIndex];
             }
         }
     }
@@ -86,6 +94,6 @@ class DirectoriesTable implements Component
         $this->directories = $directories;
 
         $this->state = new TableState();
-        $this->selected = 0;
+        $this->selectedIndex = 0;
     }
 }
