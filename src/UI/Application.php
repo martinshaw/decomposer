@@ -31,8 +31,7 @@ class Application
 
     private Display $display;
 
-    private LoadingScreen $loadingScreen;
-    private TableScreen $tableScreen;
+    private Screen $activeScreen;
 
     private bool $isFirstRender = true;
 
@@ -49,14 +48,13 @@ class Application
 
         $this->display = DisplayBuilder::default()->fullscreen()->build();
 
-        $this->loadingScreen = new LoadingScreen($this);
-        $this->tableScreen = new TableScreen($this);
+        $this->activeScreen = new LoadingScreen($this);
     }
 
     private function draw()
     {
         $this->display->draw(
-            $this->isFirstRender ? $this->loadingScreen->build() : $this->tableScreen->build()
+            $this->activeScreen->build()
         );
     }
 
@@ -65,13 +63,15 @@ class Application
         if ($this->directoriesHaveLoaded) return;
 
         $this->directories = (new VendorDirectoriesWalker())->walk($this->rootPath);
-        $this->tableScreen->setDirectories($this->directories);
         $this->directoriesHaveLoaded = true;
+
+        $this->activeScreen = new TableScreen($this);
+        $this->activeScreen->setDirectories($this->directories);
     }
 
     private function handleInput(Event $event)
     {
-        $this->tableScreen->handleInput($event);
+        $this->activeScreen->handleInput($event);
     }
 
     private function trapInput()
@@ -157,6 +157,6 @@ class Application
                 return $current->getPath() !== $directory->getPath();
             }
         );
-        $this->tableScreen->setDirectories($this->directories);
+        $this->activeScreen->setDirectories($this->directories);
     }
 }

@@ -3,7 +3,7 @@
 namespace Martinshaw\Decomposer\UI\Screens;
 
 use Martinshaw\Decomposer\UI\Application;
-use Martinshaw\Decomposer\UI\Component;
+use Martinshaw\Decomposer\UI\Screen;
 use Martinshaw\Decomposer\UI\Widgets\LoadingText;
 use Martinshaw\Decomposer\UI\Widgets\Logo;
 
@@ -13,7 +13,7 @@ use PhpTui\Tui\Model\Direction;
 use PhpTui\Tui\Model\Layout\Constraint;
 use PhpTui\Tui\Model\Widget;
 
-class LoadingScreen implements Component
+class LoadingScreen implements Screen
 {
     private Logo $logoWidget;
     private LoadingText $loadingTextWidget;
@@ -44,5 +44,10 @@ class LoadingScreen implements Component
     {
         $this->logoWidget->handleInput($event);
         $this->loadingTextWidget->handleInput($event);
+    }
+
+    public function setDirectories(array $directories): void
+    {
+        // Do nothing
     }
 }
