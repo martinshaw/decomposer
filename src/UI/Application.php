@@ -2,28 +2,21 @@
 
 namespace Martinshaw\Decomposer\UI;
 
-use Martinshaw\Decomposer\UI\Component;
-use Martinshaw\Decomposer\UI\Screens\LoadingScreen;
+use Martinshaw\Decomposer\UI\Screens\EmptyScreen;
 use Martinshaw\Decomposer\UI\Screens\TableScreen;
-use Martinshaw\Decomposer\VendorDirectoriesWalker;
+use Martinshaw\Decomposer\UI\Screens\LoadingScreen;
 use Martinshaw\Decomposer\VendorDirectory;
 use Martinshaw\Decomposer\VendorDirectoryDeleter;
-use PhpTui\Term\Actions;
-use PhpTui\Term\ClearType;
+use Martinshaw\Decomposer\VendorDirectoriesWalker;
+
 use PhpTui\Term\Event;
-use PhpTui\Term\Event\CharKeyEvent;
-use PhpTui\Term\Event\CodedKeyEvent;
-use PhpTui\Term\KeyCode;
-use PhpTui\Term\KeyModifiers;
+use PhpTui\Term\Actions;
 use PhpTui\Term\Terminal;
+use PhpTui\Term\ClearType;
+use PhpTui\Term\KeyModifiers;
 use PhpTui\Tui\DisplayBuilder;
-use PhpTui\Tui\Extension\Core\Widget\BlockWidget;
-use PhpTui\Tui\Extension\Core\Widget\GridWidget;
-use PhpTui\Tui\Model\Direction;
+use PhpTui\Term\Event\CharKeyEvent;
 use PhpTui\Tui\Model\Display\Display;
-use PhpTui\Tui\Model\Layout\Constraint;
-use PhpTui\Tui\Model\Text\Title;
-use PhpTui\Tui\Model\Widget\Borders;
 
 class Application
 {
@@ -65,7 +58,7 @@ class Application
         $this->directories = (new VendorDirectoriesWalker())->walk($this->rootPath);
         $this->directoriesHaveLoaded = true;
 
-        $this->activeScreen = new TableScreen($this);
+        $this->activeScreen = count($this->directories) > 0 ? new TableScreen($this) : new EmptyScreen($this);
         $this->activeScreen->setDirectories($this->directories);
     }
 

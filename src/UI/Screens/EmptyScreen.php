@@ -4,7 +4,7 @@ namespace Martinshaw\Decomposer\UI\Screens;
 
 use Martinshaw\Decomposer\UI\Application;
 use Martinshaw\Decomposer\UI\Screen;
-use Martinshaw\Decomposer\UI\Widgets\LoadingText;
+use Martinshaw\Decomposer\UI\Widgets\EmptyText;
 use Martinshaw\Decomposer\UI\Widgets\Logo;
 use Martinshaw\Decomposer\UI\Widgets\PaddingTextLine;
 
@@ -14,17 +14,17 @@ use PhpTui\Tui\Model\Direction;
 use PhpTui\Tui\Model\Layout\Constraint;
 use PhpTui\Tui\Model\Widget;
 
-class LoadingScreen implements Screen
+class EmptyScreen implements Screen
 {
     private Logo $logoWidget;
-    private LoadingText $loadingTextWidget;
+    private EmptyText $emptyTextWidget;
 
     public function __construct(
         private Application $app
     )
     {
         $this->logoWidget = new Logo($app);
-        $this->loadingTextWidget = new LoadingText($app);
+        $this->emptyTextWidget = new EmptyText($app);
     }
 
     public function build(): Widget
@@ -39,14 +39,14 @@ class LoadingScreen implements Screen
             ->widgets(
                 $this->logoWidget->build(),
                 (new PaddingTextLine($this->app))->build(),
-                $this->loadingTextWidget->build()
+                $this->emptyTextWidget->build()
             );
     }
 
     public function handleInput(Event $event): void
     {
         $this->logoWidget->handleInput($event);
-        $this->loadingTextWidget->handleInput($event);
+        $this->emptyTextWidget->handleInput($event);
     }
 
     public function setDirectories(array $directories): void

@@ -7,6 +7,7 @@ use Martinshaw\Decomposer\UI\Screen;
 use Martinshaw\Decomposer\UI\Widgets\DirectoriesTable;
 use Martinshaw\Decomposer\UI\Widgets\KeyHintBar;
 use Martinshaw\Decomposer\UI\Widgets\Logo;
+use Martinshaw\Decomposer\UI\Widgets\PaddingTextLine;
 
 use PhpTui\Term\Event;
 use PhpTui\Tui\Extension\Core\Widget\GridWidget;
@@ -35,11 +36,13 @@ class TableScreen implements Screen
             ->direction(Direction::Vertical)
             ->constraints(
                 Constraint::min(10),
+                Constraint::min(1),
                 Constraint::max(1000), 
                 Constraint::min(1),
             )
             ->widgets(
                 $this->logoWidget->build(),
+                (new PaddingTextLine($this->app))->build(),
                 $this->tableWidget->build(),
                 $this->keyHintBarWidget->build(),
             );
