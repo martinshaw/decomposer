@@ -5,7 +5,7 @@ List Composer 'vendor' directories on your system, how heavy they are, then you 
 ## Installation
 
 ```bash
-composer global require decomposer
+composer global require martinshaw/decomposer
 ```
 
 ## Usage
