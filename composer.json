@@ -1,5 +1,9 @@
 {
     "name": "martinshaw/decomposer",
+    "version": "1.0.0",
+    "description": "List Composer 'vendor' directories on your system, how heavy they are, then you can select which ones you want to delete to free up space (NPM's npkill but for PHP Composer)",
+    "type": "project",
+    "license": "GPL-3.0-or-later",
     "autoload": {
         "psr-4": {
             "Martinshaw\\Decomposer\\": "src/"
