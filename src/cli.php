@@ -2,6 +2,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use Martinshaw\Decomposer\VendorDirectoriesWalker;
+use Martinshaw\Decomposer\UI\Application;
 
 $rootPath = empty($argv[1]) ? getcwd() : $argv[1];
 $rootPath = realpath($rootPath);
@@ -14,5 +15,6 @@ if ($rootPath === false) {
 $walker = new VendorDirectoriesWalker();
 $directories = $walker->walk($rootPath);
 
-var_dump($directories);
-exit;
+$ui = new Application();
+$ui->addDirectories($directories);
+$ui->run();
