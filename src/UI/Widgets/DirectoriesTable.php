@@ -2,21 +2,21 @@
 
 namespace Martinshaw\Decomposer\UI\Widgets;
 
-use Martinshaw\Decomposer\UI\Application;
 use Martinshaw\Decomposer\UI\Component;
+use Martinshaw\Decomposer\UI\Application;
 use Martinshaw\Decomposer\VendorDirectory;
 
 use PhpTui\Term\Event;
-use PhpTui\Term\Event\CodedKeyEvent;
 use PhpTui\Term\KeyCode;
-use PhpTui\Tui\Extension\Core\Widget\Table\TableCell;
-use PhpTui\Tui\Extension\Core\Widget\Table\TableRow;
-use PhpTui\Tui\Extension\Core\Widget\Table\TableState;
-use PhpTui\Tui\Extension\Core\Widget\TableWidget;
-use PhpTui\Tui\Model\Layout\Constraint;
 use PhpTui\Tui\Model\Style;
-use PhpTui\Tui\Model\Text\Line;
 use PhpTui\Tui\Model\Widget;
+use PhpTui\Tui\Model\Text\Line;
+use PhpTui\Term\Event\CodedKeyEvent;
+use PhpTui\Tui\Model\Layout\Constraint;
+use PhpTui\Tui\Extension\Core\Widget\TableWidget;
+use PhpTui\Tui\Extension\Core\Widget\Table\TableRow;
+use PhpTui\Tui\Extension\Core\Widget\Table\TableCell;
+use PhpTui\Tui\Extension\Core\Widget\Table\TableState;
 
 class DirectoriesTable implements Component
 {

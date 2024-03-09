@@ -2,12 +2,12 @@
 
 namespace Martinshaw\Decomposer\UI;
 
-use Martinshaw\Decomposer\UI\Screens\EmptyScreen;
-use Martinshaw\Decomposer\UI\Screens\TableScreen;
-use Martinshaw\Decomposer\UI\Screens\LoadingScreen;
 use Martinshaw\Decomposer\VendorDirectory;
 use Martinshaw\Decomposer\VendorDirectoryDeleter;
 use Martinshaw\Decomposer\VendorDirectoriesWalker;
+use Martinshaw\Decomposer\UI\Screens\EmptyScreen;
+use Martinshaw\Decomposer\UI\Screens\TableScreen;
+use Martinshaw\Decomposer\UI\Screens\LoadingScreen;
 
 use PhpTui\Term\Event;
 use PhpTui\Term\Actions;

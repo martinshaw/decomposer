@@ -2,13 +2,13 @@
 
 namespace Martinshaw\Decomposer\UI\Widgets;
 
-use Martinshaw\Decomposer\UI\Application;
 use Martinshaw\Decomposer\UI\Component;
+use Martinshaw\Decomposer\UI\Application;
 
 use PhpTui\Term\Event;
-use PhpTui\Tui\Extension\Core\Widget\ParagraphWidget;
-use PhpTui\Tui\Model\Text\Text;
 use PhpTui\Tui\Model\Widget;
+use PhpTui\Tui\Model\Text\Text;
+use PhpTui\Tui\Extension\Core\Widget\ParagraphWidget;
 
 class LoadingText implements Component
 {

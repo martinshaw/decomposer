@@ -2,18 +2,18 @@
 
 namespace Martinshaw\Decomposer\UI\Screens;
 
-use Martinshaw\Decomposer\UI\Application;
 use Martinshaw\Decomposer\UI\Screen;
-use Martinshaw\Decomposer\UI\Widgets\DirectoriesTable;
-use Martinshaw\Decomposer\UI\Widgets\KeyHintBar;
+use Martinshaw\Decomposer\UI\Application;
 use Martinshaw\Decomposer\UI\Widgets\Logo;
+use Martinshaw\Decomposer\UI\Widgets\KeyHintBar;
 use Martinshaw\Decomposer\UI\Widgets\PaddingTextLine;
+use Martinshaw\Decomposer\UI\Widgets\DirectoriesTable;
 
 use PhpTui\Term\Event;
-use PhpTui\Tui\Extension\Core\Widget\GridWidget;
+use PhpTui\Tui\Model\Widget;
 use PhpTui\Tui\Model\Direction;
 use PhpTui\Tui\Model\Layout\Constraint;
-use PhpTui\Tui\Model\Widget;
+use PhpTui\Tui\Extension\Core\Widget\GridWidget;
 
 class TableScreen implements Screen
 {

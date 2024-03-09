@@ -1,9 +1,9 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use Martinshaw\Decomposer\VendorDirectoriesWalker;
 use Martinshaw\Decomposer\UI\Application;
 use Martinshaw\Decomposer\VendorDirectoryDeleter;
+use Martinshaw\Decomposer\VendorDirectoriesWalker;
 
 // Echo help information, required path, with optional --all flag which will automatically delete all vendor directories without interaction
 if (in_array('--help', $argv) || in_array('-h', $argv)) {
