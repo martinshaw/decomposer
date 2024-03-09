@@ -11,5 +11,5 @@ interface Component
 
     public function build(): Widget;
 
-    public function handle(Event $event): void;
+    public function handleInput(Event $event): void;
 }

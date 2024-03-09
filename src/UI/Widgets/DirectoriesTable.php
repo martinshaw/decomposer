@@ -1,9 +1,11 @@
 <?php
 
-namespace Martinshaw\Decomposer\UI;
+namespace Martinshaw\Decomposer\UI\Widgets;
 
+use Martinshaw\Decomposer\UI\Application;
 use Martinshaw\Decomposer\UI\Component;
 use Martinshaw\Decomposer\VendorDirectory;
+
 use PhpTui\Term\Event;
 use PhpTui\Term\Event\CodedKeyEvent;
 use PhpTui\Term\KeyCode;
@@ -72,7 +74,7 @@ class DirectoriesTable implements Component
             }, $this->directories));
     }
 
-    public function handle(Event $event): void
+    public function handleInput(Event $event): void
     {
         if ($event instanceof CodedKeyEvent) {
             if ($event->code === KeyCode::Down) {

@@ -3,6 +3,8 @@
 namespace Martinshaw\Decomposer\UI;
 
 use Martinshaw\Decomposer\UI\Component;
+use Martinshaw\Decomposer\UI\Screens\LoadingScreen;
+use Martinshaw\Decomposer\UI\Screens\TableScreen;
 use Martinshaw\Decomposer\VendorDirectoriesWalker;
 use Martinshaw\Decomposer\VendorDirectory;
 use Martinshaw\Decomposer\VendorDirectoryDeleter;
@@ -29,8 +31,8 @@ class Application
 
     private Display $display;
 
-    private Logo $logoWidget;
-    private DirectoriesTable $tableWidget;
+    private LoadingScreen $loadingScreen;
+    private TableScreen $tableScreen;
 
     private bool $isFirstRender = true;
 
@@ -47,39 +49,14 @@ class Application
 
         $this->display = DisplayBuilder::default()->fullscreen()->build();
 
-        $this->logoWidget = new Logo($this);
-        $this->tableWidget = new DirectoriesTable($this);
+        $this->loadingScreen = new LoadingScreen($this);
+        $this->tableScreen = new TableScreen($this);
     }
 
     private function draw()
     {
-        if ($this->isFirstRender) {
-            $this->display->draw(
-                GridWidget::default()
-                    ->direction(Direction::Vertical)
-                    ->constraints(
-                        Constraint::min(10),
-                        Constraint::min(1),
-                    )
-                    ->widgets(
-                        $this->logoWidget->build(),
-                        (new LoadingText($this))->build(),
-                    )
-            );
-            return;
-        }
-
         $this->display->draw(
-            GridWidget::default()
-                ->direction(Direction::Vertical)
-                ->constraints(
-                    Constraint::min(10),
-                    Constraint::min(1),
-                )
-                ->widgets(
-                    $this->logoWidget->build(),
-                    $this->tableWidget->build()
-                )
+            $this->isFirstRender ? $this->loadingScreen->build() : $this->tableScreen->build()
         );
     }
 
@@ -88,14 +65,13 @@ class Application
         if ($this->directoriesHaveLoaded) return;
 
         $this->directories = (new VendorDirectoriesWalker())->walk($this->rootPath);
-        $this->tableWidget->setDirectories($this->directories);
+        $this->tableScreen->setDirectories($this->directories);
         $this->directoriesHaveLoaded = true;
     }
 
     private function handleInput(Event $event)
     {
-        $this->logoWidget->handle($event);
-        $this->tableWidget->handle($event);
+        $this->tableScreen->handleInput($event);
     }
 
     private function trapInput()
@@ -181,6 +157,6 @@ class Application
                 return $current->getPath() !== $directory->getPath();
             }
         );
-        $this->tableWidget->setDirectories($this->directories);
+        $this->tableScreen->setDirectories($this->directories);
     }
 }
