@@ -7,6 +7,8 @@ class VendorDirectory implements JsonSerializable{
     private string $path;
     private int $size;
 
+    private bool $cannotBeDeleted = false;
+
     public function __construct(string $path, int $size) {
         $this->path = $path;
         $this->size = $size;
@@ -31,6 +33,14 @@ class VendorDirectory implements JsonSerializable{
         }
 
         return round($bytes, 2) . ' ' . $units[$unit];
+    }
+
+    public function getCannotBeDeleted(): bool {
+        return $this->cannotBeDeleted;
+    }
+
+    public function setCannotBeDeleted(bool $cannotBeDeleted): void {
+        $this->cannotBeDeleted = $cannotBeDeleted;
     }
 
     public function jsonSerialize() {

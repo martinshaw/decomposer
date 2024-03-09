@@ -3,6 +3,19 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Martinshaw\Decomposer\VendorDirectoriesWalker;
 use Martinshaw\Decomposer\UI\Application;
+use Martinshaw\Decomposer\VendorDirectoryDeleter;
+
+// Echo help information, required path, with optional --all flag which will automatically delete all vendor directories without interaction
+if (in_array('--help', $argv) || in_array('-h', $argv)) {
+    echo "Usage: decomposer [path] [--all]\n";
+    echo "  path: The path to the root of projects whose vendor directories you wish to delete\n";
+    echo "  --all: Automatically delete all vendor directories without interaction (optional)\n";
+    echo "  --help: Display this help information\n";
+    echo "\n";
+    echo "If no path is provided, the current working directory will be used\n";
+    echo "If the --all flag is not provided, you will be prompted to confirm the deletion of each vendor directory\n";
+    exit(0);
+}
 
 $rootPath = empty($argv[1]) ? getcwd() : $argv[1];
 $rootPath = realpath($rootPath);
@@ -12,8 +25,21 @@ if ($rootPath === false) {
     exit(1);
 }
 
-$walker = new VendorDirectoriesWalker();
-$directories = $walker->walk($rootPath);
+if (in_array('--all', $argv)) {
+    $walker = new VendorDirectoriesWalker();
+    $directories = $walker->walk($rootPath);
+
+    foreach ($directories as $directory) {
+        echo "Deleting {$directory->getPath()}...  ";
+        $deleter = new VendorDirectoryDeleter();
+        $deleter->delete($directory);
+
+        if ($deleter->getDeletedSuccessfully()) echo "Done\n";
+        else echo "Failed to delete {$directory->getPath()}\n";
+    }
+
+    exit(0);
+}
 
 $ui = new Application($rootPath);
 $ui->run();

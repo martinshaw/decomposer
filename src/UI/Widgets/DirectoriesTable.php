@@ -59,17 +59,13 @@ class DirectoriesTable implements Component
             ->rows(...array_map(function (VendorDirectory $directory) {
                 $directoryIsSelected = in_array($directory, $this->selectedDirectories);
 
+                $caption = $directory->getPath();
+                if ($directoryIsSelected) $caption .= ' (is deleting ...)';
+                if ($directory->getCannotBeDeleted()) $caption .= ' (do not have permission to delete)';
+
                 return TableRow::fromCells(
-                    // TableCell::fromLine(Line::fromSpan(
-                    //     Span::fromString($event[1])->fg(match ($event[1]) {
-                    //         'INFO' => AnsiColor::Green,
-                    //         'WARNING' => AnsiColor::Yellow,
-                    //         'CRITICAL' => AnsiColor::Red,
-                    //         default => AnsiColor::Cyan,
-                    //     }),
-                    // )),
                     TableCell::fromLine(Line::fromString($directory->getSizeAsHumanReadable())),
-                    TableCell::fromLine(Line::fromString($directory->getPath() . ($directoryIsSelected ? ' (is deleting ...)' : ''))),
+                    TableCell::fromLine(Line::fromString($caption)),
                 );
             }, $this->directories));
     }
@@ -97,9 +93,11 @@ class DirectoriesTable implements Component
      */
     public function setDirectories(array $directories)
     {
+        $this->selectedDirectories = [];
         $this->directories = $directories;
 
         $this->state = new TableState();
+        // $this->selectedIndex = $this->selectedIndex < count($directories) ? $this->selectedIndex : 0;
         $this->selectedIndex = 0;
     }
 }

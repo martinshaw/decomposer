@@ -148,15 +148,29 @@ class Application
         // Draw one more time before hanging the UI, to display the 'is deleting ...' message
         $this->draw();
 
-        $deleter = new VendorDirectoryDeleter();
-        $deleter->delete($directory);
+        try {
+            $deleter = new VendorDirectoryDeleter();
+            $deleter->delete($directory);
 
-        $this->directories = array_filter(
-            $this->directories,
-            function ($current) use ($directory) {
-                return $current->getPath() !== $directory->getPath();
-            }
-        );
+            if ($deleter->getDeletedSuccessfully() === false) throw new \Exception('Deletion failed');
+
+            $this->directories = array_filter(
+                $this->directories,
+                function ($current) use ($directory) {
+                    return $current->getPath() !== $directory->getPath();
+                }
+            );
+        } catch (\Exception $exception) {
+            // Deletion may fail due to file permissions, etc. We don't want to crash the whole app
+            $this->directories = array_map(
+                function ($current) use ($directory) {
+                    if ($current->getPath() === $directory->getPath()) $current->setCannotBeDeleted(true);
+                    return $current;
+                },
+                $this->directories
+            );
+        }
+
         $this->activeScreen->setDirectories($this->directories);
     }
 }

@@ -4,8 +4,16 @@ namespace Martinshaw\Decomposer;
 
 class VendorDirectoryDeleter
 {
+    private bool $deletedSuccessfully;
+
+    public function getDeletedSuccessfully(): bool
+    {
+        return $this->deletedSuccessfully;
+    }
+
     public function delete(VendorDirectory $vendorDirectory): void
     {
+        $this->deletedSuccessfully = true;
         $this->deleteDirectory($vendorDirectory->getPath());
     }
 
@@ -18,9 +26,16 @@ class VendorDirectoryDeleter
         foreach ($files as $file) {
             $file = $path . DIRECTORY_SEPARATOR . $file;
 
-            if (is_dir($file)) $this->deleteDirectory($file);
-            else unlink($file);
+            if (is_dir($file)) {
+                $this->deleteDirectory($file);
+            }
+            else {
+                if (@unlink($file) !== true) {
+                    $this->deletedSuccessfully = false;
+                }
+            }
         }
-        rmdir($path);
+
+        @rmdir($path);
     }
 }

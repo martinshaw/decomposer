@@ -20,7 +20,7 @@ class KeyHintBar implements Component
     public function build(): Widget
     {
         return ParagraphWidget::fromText(
-            Text::fromString("Up/Down to navigate list - Enter to delete - q to quit")
+            Text::fromString("Up/Down to navigate list   -   Enter to delete   -   q to quit")
         );
     }
 
