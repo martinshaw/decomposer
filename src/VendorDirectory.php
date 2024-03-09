@@ -1,9 +1,7 @@
 <?php
 namespace Martinshaw\Decomposer;
 
-use JsonSerializable;
-
-class VendorDirectory implements JsonSerializable{
+class VendorDirectory {
     private string $path;
     private int $size;
 
@@ -41,13 +39,5 @@ class VendorDirectory implements JsonSerializable{
 
     public function setCannotBeDeleted(bool $cannotBeDeleted): void {
         $this->cannotBeDeleted = $cannotBeDeleted;
-    }
-
-    public function jsonSerialize() {
-        return [
-            'path' => $this->path,
-            'size' => $this->size,
-            'sizeHumanReadable' => $this->getSizeAsHumanReadable()
-        ];
     }
 }
