@@ -1,5 +1,15 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php';
+
+// When run as a global composer bin, we want to use the global composer autoloader
+
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) require __DIR__ . '/../vendor/autoload.php';
+else if (file_exists(__DIR__ . '/../../autoload.php')) require __DIR__ . '/../../autoload.php';
+else if (file_exists(__DIR__ . '/../../../autoload.php')) require __DIR__ . '/../../../autoload.php';
+else {
+    echo "Could not find composer autoloader\n";
+    exit(1);
+}
+
 
 use Martinshaw\Decomposer\UI\Application;
 use Martinshaw\Decomposer\VendorDirectoryDeleter;
