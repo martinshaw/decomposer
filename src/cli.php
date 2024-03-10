@@ -1,7 +1,6 @@
 <?php
 
 // When run as a global composer bin, we want to use the global composer autoloader
-
 if (file_exists(__DIR__ . '/../vendor/autoload.php')) require __DIR__ . '/../vendor/autoload.php';
 else if (file_exists(__DIR__ . '/../../autoload.php')) require __DIR__ . '/../../autoload.php';
 else if (file_exists(__DIR__ . '/../../../autoload.php')) require __DIR__ . '/../../../autoload.php';
@@ -10,12 +9,10 @@ else {
     exit(1);
 }
 
-
 use Martinshaw\Decomposer\UI\Application;
 use Martinshaw\Decomposer\VendorDirectoryDeleter;
 use Martinshaw\Decomposer\VendorDirectoriesWalker;
 
-// Echo help information, required path, with optional --all flag which will automatically delete all vendor directories without interaction
 if (in_array('--help', $argv) || in_array('-h', $argv)) {
     echo "Usage: " . $argv[0] . " [path] [--all]\n";
     echo "  path: The path to the root of projects whose vendor directories you wish to delete\n";
